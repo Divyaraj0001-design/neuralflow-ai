@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://neuralflow-ai.vercel.app/sitemap.xml
