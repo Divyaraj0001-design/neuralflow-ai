@@ -155,7 +155,7 @@ export default function Features() {
 
               {/* Icon */}
               <img
-                src={`/assets/${f.icon}`} alt=""
+                src={`./assets/${f.icon}`} alt=""
                 className="icon-accent"
                 style={{ width: 32, height: 32, marginBottom: '1rem' }}
                 aria-hidden="true"
@@ -229,7 +229,7 @@ export default function Features() {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <img
-                      src={`/assets/${f.icon}`} alt=""
+                      src={`./assets/${f.icon}`} alt=""
                       className={open ? 'icon-accent' : 'icon-svg'}
                       style={{ width: 20, height: 20 }}
                       aria-hidden="true"
@@ -244,7 +244,7 @@ export default function Features() {
                     </span>
                   </div>
                   <img
-                    src={open ? '/assets/chevron-up.svg' : '/assets/chevron-down.svg'}
+                    src={open ? './assets/chevron-up.svg' : './assets/chevron-down.svg'}
                     alt={open ? 'Collapse' : 'Expand'}
                     className="icon-svg"
                     style={{ width: 20, height: 20, flexShrink: 0, transition: 'transform var(--t-micro)' }}

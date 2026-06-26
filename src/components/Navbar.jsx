@@ -27,7 +27,7 @@ export default function Navbar() {
       }}>
         {/* Logo */}
         <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
-          <img src="/assets/cube-16-solid.svg" alt="" className="icon-accent"
+          <img src="./assets/cube-16-solid.svg" alt="" className="icon-accent"
             style={{ width: 24, height: 24 }} aria-hidden="true" />
           <span style={{ fontFamily: 'var(--font-display)', color: 'var(--color-accent)', fontWeight: 700, fontSize: '1.1rem' }}>
             NeuralFlow
@@ -67,7 +67,7 @@ export default function Navbar() {
             onMouseEnter={e => e.currentTarget.style.opacity = '1'}
             onMouseLeave={e => e.currentTarget.style.opacity = '0.6'}
           >
-            <img src="/assets/search.svg" alt="Search" className="icon-svg" style={{ width: 18, height: 18 }} />
+            <img src="./assets/search.svg" alt="Search" className="icon-svg" style={{ width: 18, height: 18 }} />
           </button>
 
           <button
@@ -111,7 +111,7 @@ export default function Navbar() {
           style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
         >
           <img
-            src={mobileOpen ? '/assets/x-mark.svg' : '/assets/search.svg'}
+            src={mobileOpen ? './assets/x-mark.svg' : './assets/search.svg'}
             alt=""
             className="icon-svg"
             style={{ width: 24, height: 24 }}

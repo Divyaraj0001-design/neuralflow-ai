@@ -66,7 +66,7 @@ export default function Footer() {
       }}>
         {/* Brand */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <img src="/assets/cube-16-solid.svg" alt="" className="icon-accent"
+          <img src="./assets/cube-16-solid.svg" alt="" className="icon-accent"
             style={{ width: 20, height: 20 }} aria-hidden="true" />
           <span style={{
             fontFamily: 'var(--font-display)', color: 'var(--color-accent)', fontWeight: 700,
@@ -91,7 +91,7 @@ export default function Footer() {
                   onMouseEnter={e => e.currentTarget.style.color = 'var(--color-accent)'}
                   onMouseLeave={e => e.currentTarget.style.color = 'var(--color-mint)'}
                 >
-                  <img src="/assets/link.svg" alt="" className="icon-svg"
+                  <img src="./assets/link.svg" alt="" className="icon-svg"
                     style={{ width: 12, height: 12 }} aria-hidden="true" />
                   {item}
                 </a>
@@ -120,7 +120,7 @@ export default function Footer() {
             onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,200,1,0.2)'}
             onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,200,1,0.1)'}
           >
-            <img src="/assets/chevron-up.svg" alt="" className="icon-accent"
+            <img src="./assets/chevron-up.svg" alt="" className="icon-accent"
               style={{ width: 16, height: 16 }} aria-hidden="true" />
           </button>
         </div>

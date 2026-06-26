@@ -219,7 +219,7 @@ export default function PricingMatrix() {
                 {tier.features.map(({ label, included }) => (
                   <li key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <img
-                      src={included ? '/assets/chevron-right.svg' : '/assets/x-mark.svg'}
+                      src={included ? './assets/chevron-right.svg' : './assets/x-mark.svg'}
                       alt={included ? 'Included' : 'Not included'}
                       className={included ? 'icon-accent' : 'icon-muted'}
                       style={{ width: 16, height: 16, flexShrink: 0 }}

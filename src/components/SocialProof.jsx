@@ -77,7 +77,7 @@ export default function SocialProof() {
                   whiteSpace: 'nowrap',
                 }}
               >
-                <img src="/assets/cube-16-solid.svg" alt=""
+                <img src="./assets/cube-16-solid.svg" alt=""
                   className="icon-muted" style={{ width: 14, height: 14 }} aria-hidden="true" />
                 <span style={{
                   fontFamily: 'var(--font-display)', fontSize: '0.8rem',
@@ -130,7 +130,7 @@ export default function SocialProof() {
                 {[...Array(5)].map((_, i) => (
                   <img
                     key={i}
-                    src="/assets/arrow-trending-up.svg"
+                    src="./assets/arrow-trending-up.svg"
                     alt=""
                     className="icon-accent"
                     style={{ width: 14, height: 14 }}

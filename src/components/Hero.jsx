@@ -115,7 +115,7 @@ export default function Hero() {
             marginBottom: '1.5rem',
           }}
         >
-          <img src="/assets/arrow-trending-up.svg" alt="" className="icon-accent"
+          <img src="./assets/arrow-trending-up.svg" alt="" className="icon-accent"
             style={{ width: 16, height: 16 }} aria-hidden="true" />
           <span style={{
             fontFamily: 'var(--font-display)', fontSize: '0.75rem',
@@ -193,7 +193,7 @@ export default function Hero() {
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
-            <img src="/assets/arrow-path.svg" alt="" className="icon-svg"
+            <img src="./assets/arrow-path.svg" alt="" className="icon-svg"
               style={{ width: 18, height: 18, filter: 'brightness(0)' }} aria-hidden="true" />
             Start Building Free
           </button>
@@ -238,7 +238,7 @@ export default function Hero() {
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   flexShrink: 0,
                 }}>
-                  <img src={`/assets/${icon}`} alt="" className="icon-accent"
+                  <img src={`./assets/${icon}`} alt="" className="icon-accent"
                     style={{ width: 20, height: 20 }} aria-hidden="true" />
                 </div>
                 <div>
@@ -269,7 +269,7 @@ export default function Hero() {
             fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: 'var(--color-mint)',
             letterSpacing: '0.1em',
           }}>SCROLL TO EXPLORE</span>
-          <img src="/assets/chevron-down.svg" alt="" className="icon-svg"
+          <img src="./assets/chevron-down.svg" alt="" className="icon-svg"
             style={{ width: 20, height: 20 }} aria-hidden="true" />
         </div>
       </div>
