@@ -3,150 +3,201 @@ import { useState, useEffect } from 'react';
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState('');
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 20);
+    const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', fn, { passive: true });
-    return () => window.removeEventListener('scroll', fn);
+
+    // Track active section
+    const sections = ['features', 'pricing', 'social-proof'];
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) setActiveLink(e.target.id); }),
+      { threshold: 0.3 }
+    );
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
+
+    return () => { window.removeEventListener('scroll', fn); obs.disconnect(); };
   }, []);
 
-  const navStyle = {
-    position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
-    backgroundColor: scrolled ? 'rgba(23,43,54,0.95)' : 'transparent',
-    backdropFilter: scrolled ? 'blur(12px)' : 'none',
-    WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
-    borderBottom: scrolled ? '1px solid rgba(217,232,226,0.1)' : 'none',
-    transition: 'background-color 300ms ease-in-out, border-color 300ms ease-in-out',
+  const links = [
+    { label: 'Features', href: '#features', id: 'features' },
+    { label: 'Pricing', href: '#pricing', id: 'pricing' },
+    { label: 'Customers', href: '#social-proof', id: 'social-proof' },
+    { label: 'Docs', href: '#', id: '' },
+  ];
+
+  const navbarStyle = {
+    position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+    display: 'flex', justifyContent: 'center',
+    padding: scrolled ? '0.6rem 1.5rem' : '1rem 1.5rem',
+    transition: 'padding 300ms ease',
+    pointerEvents: 'none',
+  };
+
+  const pillStyle = {
+    pointerEvents: 'all',
+    maxWidth: '72rem', width: '100%',
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    padding: '0 1.5rem', height: '3.5rem', borderRadius: '16px',
+    background: scrolled ? 'rgba(13,31,42,0.85)' : 'rgba(13,31,42,0.5)',
+    backdropFilter: 'blur(24px)',
+    WebkitBackdropFilter: 'blur(24px)',
+    border: scrolled ? '1px solid rgba(200,223,218,0.15)' : '1px solid rgba(200,223,218,0.06)',
+    boxShadow: scrolled ? '0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,200,1,0.05)' : 'none',
+    transition: 'background 300ms ease, border 300ms ease, box-shadow 300ms ease',
   };
 
   return (
-    <header style={navStyle} className="entry-fade delay-0">
-      <nav style={{
-        maxWidth: '80rem', margin: '0 auto', padding: '0 1.5rem',
-        height: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between'
-      }}>
+    <header style={navbarStyle} className="entry-fade delay-0">
+      <div style={pillStyle}>
         {/* Logo */}
-        <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
-          <img src="./assets/cube-16-solid.svg" alt="" className="icon-accent"
-            style={{ width: 24, height: 24 }} aria-hidden="true" />
-          <span style={{ fontFamily: 'var(--font-display)', color: 'var(--color-accent)', fontWeight: 700, fontSize: '1.1rem' }}>
-            NeuralFlow
+        <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', textDecoration: 'none' }}>
+          <div style={{
+            width: 32, height: 32, borderRadius: 9,
+            background: 'linear-gradient(135deg, rgba(255,200,1,0.2), rgba(255,153,50,0.1))',
+            border: '1px solid rgba(255,200,1,0.35)',
+            boxShadow: '0 0 16px rgba(255,200,1,0.2)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <img src="./assets/cube-16-solid.svg" alt="" className="icon-accent"
+              style={{ width: 18, height: 18 }} aria-hidden="true" />
+          </div>
+          <span style={{
+            fontFamily: 'var(--font-display)', color: 'var(--color-powder)',
+            fontWeight: 700, fontSize: '1rem', letterSpacing: '-0.02em',
+          }}>
+            Neural<span style={{ color: 'var(--color-accent)' }}>Flow</span>
           </span>
         </a>
 
-        {/* Desktop nav links */}
-        <ul className="hidden md:flex" style={{ gap: '2rem', listStyle: 'none', margin: 0, display: 'flex' }}>
-          {['Features', 'Pricing', 'Social Proof', 'Blog'].map(item => (
-            <li key={item}>
+        {/* Desktop nav */}
+        <ul className="hide-mobile" style={{ display: 'flex', gap: '0.25rem', listStyle: 'none', alignItems: 'center' }}>
+          {links.map(({ label, href, id }) => (
+            <li key={label}>
               <a
-                href={`#${item.toLowerCase().replace(' ', '-')}`}
+                href={href}
                 style={{
-                  fontFamily: 'var(--font-body)', color: 'var(--color-mint)',
-                  fontSize: '0.9rem', fontWeight: 500, textDecoration: 'none',
-                  transition: 'color var(--t-micro)',
+                  fontFamily: 'var(--font-body)', fontSize: '0.875rem', fontWeight: 500,
+                  textDecoration: 'none', padding: '6px 14px', borderRadius: 8,
+                  color: activeLink === id ? 'var(--color-accent)' : 'var(--color-mint)',
+                  background: activeLink === id ? 'rgba(255,200,1,0.08)' : 'transparent',
+                  transition: 'color var(--t-micro), background var(--t-micro)',
+                  display: 'block',
                 }}
-                onMouseEnter={e => e.target.style.color = 'var(--color-accent)'}
-                onMouseLeave={e => e.target.style.color = 'var(--color-mint)'}
+                onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-powder)'; e.currentTarget.style.background = 'rgba(200,223,218,0.06)'; }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.color = activeLink === id ? 'var(--color-accent)' : 'var(--color-mint)';
+                  e.currentTarget.style.background = activeLink === id ? 'rgba(255,200,1,0.08)' : 'transparent';
+                }}
               >
-                {item}
+                {label}
               </a>
             </li>
           ))}
         </ul>
 
-        {/* Desktop CTA group */}
-        <div className="hidden md:flex" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          {/* Search icon */}
-          <button
-            aria-label="Search"
-            style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              padding: '6px', borderRadius: 8, opacity: 0.6,
-              transition: 'opacity var(--t-micro)',
+        {/* Desktop CTAs */}
+        <div className="hide-mobile" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <button style={{
+            fontFamily: 'var(--font-body)', background: 'none',
+            border: '1px solid rgba(200,223,218,0.2)', color: 'var(--color-mint)',
+            cursor: 'pointer', fontSize: '0.875rem', fontWeight: 500,
+            padding: '7px 18px', borderRadius: 9,
+            transition: 'border-color var(--t-micro), color var(--t-micro), background var(--t-micro)',
+          }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = 'rgba(255,200,1,0.5)';
+              e.currentTarget.style.color = 'var(--color-accent)';
+              e.currentTarget.style.background = 'rgba(255,200,1,0.05)';
             }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '0.6'}
-          >
-            <img src="./assets/search.svg" alt="Search" className="icon-svg" style={{ width: 18, height: 18 }} />
-          </button>
-
-          <button
-            style={{
-              fontFamily: 'var(--font-body)', background: 'none', border: 'none',
-              color: 'var(--color-mint)', cursor: 'pointer', fontSize: '0.9rem',
-              transition: 'color var(--t-micro)',
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = 'rgba(200,223,218,0.2)';
+              e.currentTarget.style.color = 'var(--color-mint)';
+              e.currentTarget.style.background = 'none';
             }}
-            onMouseEnter={e => e.target.style.color = 'var(--color-powder)'}
-            onMouseLeave={e => e.target.style.color = 'var(--color-mint)'}
           >
             Sign In
           </button>
 
-          <button
-            style={{
-              fontFamily: 'var(--font-body)', backgroundColor: 'var(--color-accent)',
-              color: 'var(--color-bg)', border: 'none', borderRadius: 8,
-              padding: '8px 20px', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer',
-              transition: 'transform var(--t-micro), box-shadow var(--t-micro)',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.boxShadow = '0 4px 16px rgba(255,200,1,0.4)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform = 'none';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
+          <button className="btn-shimmer" style={{
+            fontFamily: 'var(--font-body)', fontSize: '0.875rem', fontWeight: 700,
+            background: 'linear-gradient(135deg, #FFC801, #FF9932)',
+            color: '#0d1f2a', border: 'none', borderRadius: 9,
+            padding: '8px 20px', cursor: 'pointer',
+            boxShadow: '0 4px 16px rgba(255,200,1,0.35)',
+            transition: 'transform var(--t-micro), box-shadow var(--t-micro)',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(255,200,1,0.5)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(255,200,1,0.35)'; }}
           >
-            Start Free
+            Start Free →
           </button>
         </div>
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden"
+          className="hide-desktop"
           onClick={() => setMobileOpen(o => !o)}
           aria-label="Toggle navigation"
-          aria-expanded={mobileOpen}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
+          style={{
+            background: 'rgba(200,223,218,0.08)', border: '1px solid rgba(200,223,218,0.12)',
+            borderRadius: 8, padding: '6px 8px', cursor: 'pointer',
+          }}
         >
-          <img
-            src={mobileOpen ? './assets/x-mark.svg' : './assets/search.svg'}
-            alt=""
-            className="icon-svg"
-            style={{ width: 24, height: 24 }}
-            aria-hidden="true"
-          />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4, width: 20 }}>
+            {[0, 1, 2].map(i => (
+              <span key={i} style={{
+                display: 'block', height: 2, borderRadius: 2,
+                background: 'var(--color-mint)',
+                transform: mobileOpen
+                  ? i === 1 ? 'scaleX(0)' : i === 0 ? 'rotate(45deg) translate(4px,4px)' : 'rotate(-45deg) translate(4px,-4px)'
+                  : 'none',
+                transition: 'transform 200ms ease, opacity 200ms ease',
+                opacity: mobileOpen && i === 1 ? 0 : 1,
+              }} />
+            ))}
+          </div>
         </button>
-      </nav>
+      </div>
 
       {/* Mobile drawer */}
       {mobileOpen && (
         <div style={{
-          backgroundColor: 'var(--color-surface)', padding: '1rem 1.5rem',
-          borderTop: '1px solid rgba(217,232,226,0.1)',
+          position: 'absolute', top: '100%', left: '1.5rem', right: '1.5rem', marginTop: 8,
+          background: 'rgba(13,31,42,0.95)', backdropFilter: 'blur(24px)',
+          border: '1px solid rgba(200,223,218,0.12)', borderRadius: 14,
+          padding: '1rem', pointerEvents: 'all',
+          boxShadow: '0 16px 48px rgba(0,0,0,0.5)',
         }}>
-          {['Features', 'Pricing', 'Docs', 'Blog'].map(item => (
+          {links.map(({ label, href }) => (
             <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
+              key={label} href={href}
               onClick={() => setMobileOpen(false)}
               style={{
-                display: 'block', padding: '12px 0', color: 'var(--color-mint)',
+                display: 'block', padding: '12px 16px', color: 'var(--color-mint)',
                 fontFamily: 'var(--font-body)', fontSize: '1rem', textDecoration: 'none',
-                borderBottom: '1px solid rgba(217,232,226,0.08)',
+                borderRadius: 8, marginBottom: 4,
+                transition: 'background var(--t-micro), color var(--t-micro)',
               }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,200,1,0.08)'; e.currentTarget.style.color = 'var(--color-accent)'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--color-mint)'; }}
             >
-              {item}
+              {label}
             </a>
           ))}
+          <div style={{ height: 1, background: 'rgba(200,223,218,0.08)', margin: '0.5rem 0' }} />
           <button style={{
-            width: '100%', marginTop: '1rem', backgroundColor: 'var(--color-accent)',
-            color: 'var(--color-bg)', border: 'none', borderRadius: 8,
-            padding: 12, fontWeight: 700, fontSize: '1rem', cursor: 'pointer',
+            width: '100%', marginTop: 8,
+            background: 'linear-gradient(135deg, #FFC801, #FF9932)',
+            color: '#0d1f2a', border: 'none', borderRadius: 10,
+            padding: 14, fontWeight: 700, fontSize: '1rem', cursor: 'pointer',
             fontFamily: 'var(--font-body)',
           }}>
-            Start Free
+            Start Free →
           </button>
         </div>
       )}
